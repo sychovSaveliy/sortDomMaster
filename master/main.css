@@ -5,3 +5,9 @@
 #table {
     border: 1px dotted grey
 }
+
+#table td:hover {
+    background-color: grey;
+    transition: .01s;
+    cursor: pointer;
+}

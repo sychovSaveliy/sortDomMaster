@@ -15,6 +15,14 @@ window.onload = function(){
 
         this.renderTh(table, tableList[0]);
         this.renderTd(table, tableList);
+  
+        document.querySelector("#okBtn").addEventListener("click", function() {
+              
+             var textarea = document.querySelector("#textarea");
+             ourData[textarea.dataset.obj][textarea.dataset.pos] = textarea.value
+             DomMan.prototype.checkSate("table");
+             textarea.value = "";
+        });
     }
 
 
@@ -33,12 +41,30 @@ window.onload = function(){
         
         for(var i = 0; i < tableList.length; i++) {
             var tr = document.createElement("tr");
+            tr.dataset.position = i;
             var tableItem = tableList[i];
             for(var item in tableItem) {
                 var td = document.createElement("td");
+                td.dataset.field = item;
                 td.innerHTML = tableItem[item];
 
                 tr.appendChild(td);
+
+                td.addEventListener("click", function(){
+                    var textarea = document.querySelector("#textarea");
+                    if (document.querySelector("[data-active-tr]")) {
+                        document.querySelector("[data-active-tr]").removeAttribute("data-active-tr");
+                    }
+                    if (document.querySelector("[data-active-td]")) {
+                        delete document.querySelector("[data-active-td]").dataset.activeTd;
+                    }
+
+                  
+                    textarea.dataset.pos = this.dataset.field;
+                    textarea.dataset.obj = this.parentNode.dataset.position;
+                    
+                    textarea.value = this.innerHTML;
+                });
             }
 
             toTable.appendChild(tr);
@@ -47,7 +73,9 @@ window.onload = function(){
 
 
      DomMan.prototype.checkSate = function() {
-         this.renderTable(container, table, "table");
+         this.renderTable(container, ourData, "table");
+
+         IconJson = JSON.stringify(ourData);
      }
 
      DomMan.prototype.SortByField = function(sortObject, field="num") {
@@ -75,17 +103,16 @@ window.onload = function(){
 
     var  DomEx = new DomMan();
 
-
-    var table = JSON.parse(IconJson);
+    var ourData = JSON.parse(IconJson);
     var container = document.querySelector(".container");
 
   
     
   
     setTimeout(function(){
-       DomEx.SortByField(table, "num");
+       //DomEx.SortByField(table, "num");
     }, 1000);
 
     
-    DomEx.renderTable(container, table, "table");
+    DomEx.renderTable(container, ourData, "table");
 }
