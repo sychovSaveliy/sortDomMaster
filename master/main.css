@@ -1,0 +1,7 @@
+#table td, #table th{
+    border: 2px solid black;
+}
+
+#table {
+    border: 1px dotted grey
+}
